@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact - E-Commerce Demo</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="logo"><i class="fa-solid fa-bolt"></i> E-Store</div>
+      <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="products.html"><i class="fa-solid fa-box-open"></i> Products</a></li>
+        <li><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i> Orders <span id="cartBadge">0</span></a></li>
+        <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="contact.html" class="active"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 2rem;">
+    <h1>Get in Touch</h1>
+    <p>We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
+
+    <div style="display: flex; gap: 4rem; flex-wrap: wrap; margin-top: 2rem;">
+      <form id="contactForm" style="flex: 2;">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required placeholder="John Doe">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="john@example.com">
+
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" required placeholder="How can we help?">
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required placeholder="Your message here..."
+          style="height: 150px;"></textarea>
+
+        <button type="submit" class="btn-primary"><i class="fa-regular fa-paper-plane"></i> Send Message</button>
+      </form>
+
+      <div style="flex: 1; min-width: 300px;">
+        <div class="info-item" style="text-align: left; margin-bottom: 1rem;">
+          <i class="fa-solid fa-envelope"></i>
+          <h3>Email Us</h3>
+          <p>support@ecommerce-demo.com</p>
+        </div>
+        <div class="info-item" style="text-align: left; margin-bottom: 1rem;">
+          <i class="fa-solid fa-phone"></i>
+          <h3>Call Us</h3>
+          <p>(555) 123-4567</p>
+        </div>
+        <div class="info-item" style="text-align: left; margin-bottom: 1rem;">
+          <i class="fa-solid fa-location-dot"></i>
+          <h3>Visit Us</h3>
+          <p>123 Demo Street, Tech City</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // API Base URL - automatically detects if running locally or online
+    const API_BASE_URL = window.location.origin === 'file://' || window.location.hostname === 'localhost' 
+      ? 'http://localhost:3000' 
+      : window.location.origin;
+    
+    // Load cart on page load
+    if (typeof loadCart === 'function') {
+      loadCart();
+    }
+    
+    document.getElementById('contactForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      const btn = this.querySelector('button');
+      const originalText = btn.innerHTML;
+
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert(result.message);
+          this.reset();
+        } else {
+          alert('Error sending message: ' + result.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to send message.');
+      } finally {
+        btn.innerHTML = originalText;
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Orders - E-Commerce Demo</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="logo"><i class="fa-solid fa-bolt"></i> E-Store</div>
+      <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="products.html"><i class="fa-solid fa-box-open"></i> Products</a></li>
+        <li><a href="orders.html" class="active"><i class="fa-solid fa-cart-shopping"></i> Orders <span id="cartBadge">0</span></a></li>
+        <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 2rem;">
+    <h2><i class="fa-solid fa-cart-arrow-down"></i> Current Cart</h2>
+    <div class="cart-container">
+      <table id="orderTable">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Line Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="orderTotal" class="right">0.00</div>
+    </div>
+
+    <div style="margin-top: 4rem;">
+      <h2><i class="fa-solid fa-clock-rotate-left"></i> Order History</h2>
+      <div id="historyContainer">
+        <p>Loading your past orders...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Load cart and render on page load
+    if (typeof loadCart === 'function') {
+      loadCart();
+    }
+    if (typeof renderOrder === 'function') {
+      renderOrder();
+    }
+    if (typeof fetchOrderHistory === 'function') {
+      fetchOrderHistory();
+    }
+  </script>
+</body>
+
+</html>

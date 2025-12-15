@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Products - E-Commerce Demo</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="logo"><i class="fa-solid fa-bolt"></i> E-Store</div>
+      <ul>
+        <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="products.html" class="active"><i class="fa-solid fa-box-open"></i> Products</a></li>
+        <li><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i> Orders <span id="cartBadge">0</span></a></li>
+        <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 2rem;">
+    <h1><i class="fa-solid fa-tags"></i> Our Catalog</h1>
+    <p>Explore our premium collection of tech gear.</p>
+
+    <div id="productGrid" class="product-grid">
+      <!-- Products injected here by JS -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Load cart and products on page load
+    if (typeof loadCart === 'function') {
+      loadCart();
+    }
+    if (typeof fetchProducts === 'function') {
+      fetchProducts(); // This will auto-call renderProducts
+    }
+  </script>
+</body>
+
+</html>

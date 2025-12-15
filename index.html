@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>E-Store | Future of Tech</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <nav>
+    <div class="nav-content">
+      <div class="logo"><i class="fa-solid fa-bolt"></i> E-Store</div>
+      <ul>
+        <li><a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li><a href="products.html"><i class="fa-solid fa-box-open"></i> Products</a></li>
+        <li><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i> Orders <span id="cartBadge">0</span></a></li>
+        <li><a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a></li>
+        <li><a href="contact.html"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Future of Shopping</h1>
+      <p>Experience the next generation of e-commerce today.</p>
+      <a href="products.html" class="btn-primary"
+        style="text-decoration: none; display: inline-block; margin-top: 1rem;"><i class="fa-solid fa-shop"></i> Shop
+        Now</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Features Section -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 4rem;">
+      <div class="info-item">
+        <i class="fa-solid fa-truck-fast"></i>
+        <h3>Fast Shipping</h3>
+        <p>Get your gadgets delivered in record time with our express logistics.</p>
+      </div>
+      <div class="info-item">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3>Secure Payment</h3>
+        <p>Your transactions are protected by industry-leading encryption.</p>
+      </div>
+      <div class="info-item">
+        <i class="fa-solid fa-headset"></i>
+        <h3>24/7 Support</h3>
+        <p>Our expert team is always here to help you with any questions.</p>
+      </div>
+    </div>
+
+    <h2><i class="fa-solid fa-fire"></i> Trending Products</h2>
+    <div id="productGrid" class="product-grid">
+      <!-- Products injected here by JS -->
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="products.html"
+        style="font-weight: 600; color: var(--primary); text-decoration: none; font-size: 1.1rem;">View All Products <i
+          class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+
+  <footer style="background: #1e293b; color: white; padding: 4rem 2rem; margin-top: auto;">
+    <div class="nav-content" style="flex-direction: column; gap: 2rem; text-align: center;">
+      <div class="logo"><i class="fa-solid fa-bolt"></i> E-Store</div>
+      <p style="color: #94a3b8; max-width: 400px;">The best place to buy premium tech products. High quality, great
+        prices, and fast shipping.</p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="#" style="color: white;"><i class="fa-brands fa-twitter fa-lg"></i></a>
+        <a href="#" style="color: white;"><i class="fa-brands fa-facebook fa-lg"></i></a>
+        <a href="#" style="color: white;"><i class="fa-brands fa-instagram fa-lg"></i></a>
+      </div>
+      <p style="color: #64748b; font-size: 0.8rem; margin-top: 2rem;">&copy; 2024 E-Commerce Demo. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Initial load for home page
+    if (typeof loadCart === 'function') {
+      loadCart();
+    }
+    if (typeof fetchProducts === 'function') {
+      fetchProducts();
+    }
+  </script>
+</body>
+
+</html>
