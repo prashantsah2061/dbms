@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS payments (
     status ENUM('INITIATED', 'COMPLETED', 'FAILED', 'REFUNDED') DEFAULT 'INITIATED',
     transaction_ref VARCHAR(100),
     paid_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_payments_order (order_id),
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE
 );
 

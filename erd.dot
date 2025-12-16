@@ -1,0 +1,22 @@
+digraph ERD {
+  rankdir=LR;
+  node [shape=record, fontsize=10];
+
+  customers [label="{customers|customer_id (PK)\lfirst_name\llast_name\lemail\lphone\lcreated_at\l}"];
+  addresses [label="{addresses|address_id (PK)\lcustomer_id (FK)\lline1\lline2\lcity\lstate\lpostal_code\lcountry\lis_default\lcreated_at\l}"];
+  categories [label="{categories|category_id (PK)\lname\ldescription\l}"];
+  products [label="{products|product_id (PK)\lcategory_id (FK)\lsku (UNIQUE)\lname\ldescription\lprice\lstock_quantity\lcreated_at\l}"];
+  orders [label="{orders|order_id (PK)\lcustomer_id (FK)\lshipping_address_id (FK)\lorder_date\lstatus\lpayment_status\ltotal_amount\l}"];
+  order_items [label="{order_items|item_id (PK)\lorder_id (FK)\lproduct_id (FK)\lquantity\lunit_price\l}"];
+  payments [label="{payments|payment_id (PK)\lorder_id (FK, UNIQUE)\lamount\lmethod\lstatus\ltransaction_ref\lpaid_at\l}"];
+  contacts [label="{contacts|contact_id (PK)\lname\lemail\lsubject\lmessage\lsubmitted_at\l}"];
+
+  customers -> addresses [label="1 to many", arrowhead=crow, arrowtail=tee, dir=both];
+  customers -> orders [label="1 to many", arrowhead=crow, arrowtail=tee, dir=both];
+  categories -> products [label="1 to many", arrowhead=crow, arrowtail=tee, dir=both];
+  products -> order_items [label="1 to many", arrowhead=crow, arrowtail=tee, dir=both];
+  orders -> order_items [label="1 to many", arrowhead=crow, arrowtail=tee, dir=both];
+  orders -> payments [label="1 to 1 (unique)", arrowhead=tee, arrowtail=tee, dir=both];
+  customers -> contacts [label="1 to many", arrowhead=crow, arrowtail=tee, dir=both];
+  addresses -> orders [label="1 to many (ships_to)", arrowhead=crow, arrowtail=tee, dir=both];
+}

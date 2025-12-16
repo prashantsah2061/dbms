@@ -112,8 +112,97 @@ The application uses the following tables:
 - A `category` groups many `products`; each product tracks `sku`, `price`, and `stock_quantity`.
 - An `order` belongs to a `customer` and optionally a `shipping_address`; it has a `status`, `payment_status`, and a computed `total_amount`.
 - `order_items` link each `order` to the `products` purchased, recording `quantity` and `unit_price` at time of sale.
-- `payments` record method/status for each `order`, enabling auditability.
+- `payments` record method/status for each `order`, enabling auditability; one payment per order enforced by a unique constraint.
 - `contacts` store inbound messages from the public contact form.
+
+### ER Diagram (Mermaid)
+```mermaid
+erDiagram
+    customers {
+        INT customer_id PK
+        VARCHAR first_name
+        VARCHAR last_name
+        VARCHAR email
+        VARCHAR phone
+        TIMESTAMP created_at
+    }
+
+    addresses {
+        INT address_id PK
+        INT customer_id FK
+        VARCHAR line1
+        VARCHAR line2
+        VARCHAR city
+        VARCHAR state
+        VARCHAR postal_code
+        VARCHAR country
+        TINYINT is_default
+        TIMESTAMP created_at
+    }
+
+    categories {
+        INT category_id PK
+        VARCHAR name
+        VARCHAR description
+    }
+
+    products {
+        INT product_id PK
+        INT category_id FK
+        VARCHAR sku
+        VARCHAR name
+        TEXT description
+        DECIMAL price
+        INT stock_quantity
+        TIMESTAMP created_at
+    }
+
+    orders {
+        INT order_id PK
+        INT customer_id FK
+        INT shipping_address_id FK
+        TIMESTAMP order_date
+        ENUM status
+        ENUM payment_status
+        DECIMAL total_amount
+    }
+
+    order_items {
+        INT item_id PK
+        INT order_id FK
+        INT product_id FK
+        INT quantity
+        DECIMAL unit_price
+    }
+
+    payments {
+        INT payment_id PK
+        INT order_id FK
+        DECIMAL amount
+        ENUM method
+        ENUM status
+        VARCHAR transaction_ref
+        TIMESTAMP paid_at
+    }
+
+    contacts {
+        INT contact_id PK
+        VARCHAR name
+        VARCHAR email
+        VARCHAR subject
+        TEXT message
+        TIMESTAMP submitted_at
+    }
+
+    customers ||--o{ addresses : has
+    customers ||--o{ orders : places
+    categories ||--o{ products : groups
+    products ||--o{ order_items : appears_in
+    orders ||--o{ order_items : contains
+    orders ||--|| payments : paid_by
+    customers ||--o{ contacts : submits
+    orders }o--|| addresses : ships_to
+```
 
 ### Implementation evidence (queries)
 - `sample_queries.sql` shows joins/aggregates (catalog + category, top products by revenue, customer order history, payment trail).
