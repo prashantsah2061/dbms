@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <title>Products - E-Commerce Demo</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -24,8 +24,21 @@
   </nav>
 
   <div class="container" style="padding-top: 2rem;">
-    <h1><i class="fa-solid fa-tags"></i> Our Catalog</h1>
-    <p>Explore our premium collection of tech gear.</p>
+    <div class="section-header">
+      <div>
+        <div class="pill"><i class="fa-solid fa-plug"></i> Live catalog</div>
+        <h1><i class="fa-solid fa-tags"></i> Our Catalog</h1>
+        <p class="section-note">Explore the full collection. Everything is wired to the DB and ready for demos.</p>
+      </div>
+      <div class="badge-soft"><i class="fa-solid fa-cloud-arrow-down"></i> Auto-fetched</div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-chip"><i class="fa-solid fa-circle-check"></i> In stock</div>
+      <div class="filter-chip"><i class="fa-solid fa-fire"></i> Popular</div>
+      <div class="filter-chip"><i class="fa-solid fa-seedling"></i> Sustainable picks</div>
+      <div class="filter-chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Demo-safe</div>
+    </div>
 
     <div id="productGrid" class="product-grid">
       <!-- Products injected here by JS -->

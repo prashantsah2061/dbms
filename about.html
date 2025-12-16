@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <title>About - E-Commerce Demo</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -24,22 +24,47 @@
   </nav>
 
   <div class="container" style="padding-top: 2rem;">
-    <h1><i class="fa-solid fa-circle-info"></i> About Us</h1>
-    <p>Welcome to our E-Commerce Demo platform!</p>
-    
-    <h2><i class="fa-solid fa-bullseye"></i> Our Mission</h2>
-    <p>We provide a simple and efficient shopping experience for all your needs.</p>
-    
-    <h2><i class="fa-solid fa-gift"></i> What We Offer</h2>
-    <ul style="line-height: 2;">
-      <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Quality products at competitive prices</li>
-      <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Easy-to-use shopping interface</li>
-      <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Fast and reliable service</li>
-      <li><i class="fa-solid fa-check" style="color: var(--primary);"></i> Excellent customer support</li>
-    </ul>
-    
-    <h2><i class="fa-solid fa-book"></i> Our Story</h2>
-    <p>This is a demonstration e-commerce system built to showcase modern web development practices. We focus on simplicity, usability, and customer satisfaction.</p>
+    <div class="section-header">
+      <div>
+        <div class="pill"><i class="fa-solid fa-bolt"></i> About the build</div>
+        <h1><i class="fa-solid fa-circle-info"></i> About Us</h1>
+        <p class="section-note">Why we made this demo and how it supports a clean DBMS-powered experience.</p>
+      </div>
+      <div class="badge-soft"><i class="fa-solid fa-graduation-cap"></i> CS260 project</div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <i class="fa-solid fa-bullseye"></i>
+        <h3>Our mission</h3>
+        <p>Deliver a simple, elegant shopping experience that highlights solid backend design.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-gift"></i>
+        <h3>What we offer</h3>
+        <p>Quality products, graceful UI polish, and stress-free ordering from browse to receipt.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fa-solid fa-handshake"></i>
+        <h3>How we support</h3>
+        <p>Clear flows, inline validation, and a friendly design language that guides every click.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="panel">
+        <h2><i class="fa-solid fa-book"></i> Our Story</h2>
+        <p>We built this as a showcase of modern e-commerce patterns for our DBMS course—bridging front-end delight
+          with database reliability. Every page is tuned for presentation: smooth catalog browsing, a persistent cart,
+          and orders that surface the data you need to narrate.</p>
+        <ul style="line-height: 2;">
+          <li><i class="fa-solid fa-check" style="color: var(--accent);"></i> Clean schema powering every endpoint</li>
+          <li><i class="fa-solid fa-check" style="color: var(--accent);"></i> UI tuned for clarity and speed</li>
+          <li><i class="fa-solid fa-check" style="color: var(--accent);"></i> Resilient fallbacks for demo moments</li>
+          <li><i class="fa-solid fa-check" style="color: var(--accent);"></i> A cohesive brand that feels premium</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

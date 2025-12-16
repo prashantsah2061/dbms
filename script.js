@@ -72,9 +72,13 @@ function renderProducts() {
       <div class="product-image-placeholder" style="background: linear-gradient(135deg, hsl(${hue}, 70%, 80%), hsl(${hue}, 70%, 60%));">
         <i class="fa-solid fa-cube"></i>
       </div>
-      <h3>${p.name}</h3>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;">
+        <h3>${p.name}</h3>
+        <span class="badge-soft"><i class="fa-solid fa-circle-check"></i> ${p.stock_quantity} left</span>
+      </div>
       <div class="product-price">$${Number(p.price).toFixed(2)}</div>
-      <div class="product-stock"><i class="fa-solid fa-layer-group"></i> ${p.stock_quantity} in stock</div>
+      <div class="product-stock"><i class="fa-solid fa-layer-group"></i> Live stock sync</div>
+      <div class="product-stock"><i class="fa-solid fa-barcode"></i> SKU #${p.product_id}</div>
       <button onclick="addToOrder(${p.product_id})"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
     `;
     grid.appendChild(card);
@@ -89,10 +93,10 @@ function renderOrder() {
   let total = 0;
 
   if (orderItems.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: #888; padding: 2rem;">Your cart is empty. <a href="products.html" style="color: var(--primary);">Start shopping!</a></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><i class="fa-solid fa-cart-shopping"></i><p>Your cart is empty. <a href="products.html">Start shopping</a> to fill it.</p></div></td></tr>';
     const totalEl = document.getElementById("orderTotal");
     if (totalEl) {
-      totalEl.innerHTML = '<div style="font-size: 1.5rem; font-weight: 800; color: var(--text-secondary);">Total: $0.00</div>';
+      totalEl.innerHTML = '<div class="subdued">Total</div><div class="total-amount muted">$0.00</div>';
     }
     // Remove checkout button if exists
     const checkoutBtn = document.getElementById('checkoutBtn');
@@ -108,20 +112,22 @@ function renderOrder() {
     row.innerHTML = `
       <td>${item.name}</td>
       <td>
-        <button onclick="updateQuantity(${index}, -1)" style="padding: 4px 8px; margin-right: 8px;">-</button>
-        ${item.quantity}
-        <button onclick="updateQuantity(${index}, 1)" style="padding: 4px 8px; margin-left: 8px;">+</button>
+        <div class="quantity-control">
+          <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+          <span>${item.quantity}</span>
+          <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+        </div>
       </td>
       <td>$${Number(item.unit_price).toFixed(2)}</td>
       <td>$${lineTotal.toFixed(2)}</td>
-      <td><button onclick="removeFromCart(${index})" style="background: #ef4444; padding: 6px 12px;"><i class="fa-solid fa-trash"></i></button></td>
+      <td><button class="icon-btn danger" onclick="removeFromCart(${index})"><i class="fa-solid fa-trash"></i></button></td>
     `;
     tbody.appendChild(row);
   });
 
   const totalEl = document.getElementById("orderTotal");
   if (totalEl) {
-    totalEl.innerHTML = `<div style="font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-top: 1rem;">Total: $${total.toFixed(2)}</div>`;
+    totalEl.innerHTML = `<div class="subdued">Total</div><div class="total-amount">$${total.toFixed(2)}</div>`;
   }
 
   ensureCheckoutButton();
@@ -194,7 +200,7 @@ function addToOrder(productId) {
 
   // Show quick feedback
   const notification = document.createElement('div');
-  notification.style.cssText = 'position: fixed; top: 80px; right: 20px; background: #10b981; color: white; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000; animation: slideIn 0.3s;';
+  notification.style.cssText = 'position: fixed; top: 80px; right: 20px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #0b1021; padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 18px 35px rgba(0,0,0,0.25); z-index: 1000; animation: slideIn 0.3s; font-weight: 800;';
   notification.innerHTML = `<i class="fa-solid fa-check-circle"></i> Added ${product.name} to cart!`;
   document.body.appendChild(notification);
   
@@ -328,7 +334,7 @@ async function fetchOrderHistory() {
   const container = document.getElementById('historyContainer');
   if (!container) return;
 
-  container.innerHTML = '<p><i class="fa-solid fa-spinner fa-spin"></i> Loading your past orders...</p>';
+  container.innerHTML = '<p class="subdued"><i class="fa-solid fa-spinner fa-spin"></i> Loading your past orders...</p>';
 
   try {
     const response = await fetch(`${API_BASE_URL}/orders`);
@@ -343,36 +349,31 @@ async function fetchOrderHistory() {
       return;
     }
 
-    let html = '<div style="display: grid; gap: 1rem;">';
+    let html = '<div class="history-grid">';
     orders.forEach(order => {
       const date = order.order_date ? new Date(order.order_date).toLocaleDateString() + ' ' + new Date(order.order_date).toLocaleTimeString() : 'N/A';
       const items = Array.isArray(order.items) ? order.items.map(i => `${i.quantity} x ${i.name} ($${Number(i.unit_price).toFixed(2)})`).join(', ') : 'No line items found';
       html += `
-                <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; display: grid; gap: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <strong style="display: block; font-size: 1.1rem; color: var(--text-primary);">Order #${order.order_id}</strong>
-                            <span style="color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-calendar"></i> ${date}</span>
-                        </div>
-                        <div style="text-align: right;">
-                            <div style="font-weight: 800; font-size: 1.2rem; color: var(--primary);">
-                                $${Number(order.total_amount || 0).toFixed(2)}
-                            </div>
-                            <div style="color: #0ea5e9; font-size: 0.85rem; font-weight: 700;">${order.status || 'PENDING'} / ${order.payment_status || 'PENDING'}</div>
-                        </div>
-                    </div>
-                    <div style="color: #475569; font-size: 0.95rem;">
-                        <i class="fa-solid fa-list"></i> ${items}
-                    </div>
-                </div>
-            `;
+        <div class="history-card">
+          <div class="section-header">
+            <div>
+              <div class="subdued">Order #${order.order_id}</div>
+              <div class="total-amount">$${Number(order.total_amount || 0).toFixed(2)}</div>
+            </div>
+            <div class="status-chip"><i class="fa-solid fa-circle-check"></i> ${order.status || 'PENDING'}</div>
+          </div>
+          <div class="product-stock"><i class="fa-solid fa-calendar"></i> ${date}</div>
+          <div class="subdued"><i class="fa-solid fa-list"></i> ${items}</div>
+          <div class="product-stock"><i class="fa-solid fa-credit-card"></i> ${order.payment_status || 'PENDING'}</div>
+        </div>
+      `;
     });
     html += '</div>';
     container.innerHTML = html;
 
   } catch (error) {
     console.error("Error fetching history:", error);
-    container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-exclamation-triangle"></i><p style="color: #ef4444;">Failed to load order history. Make sure the server is running.</p></div>';
+    container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-exclamation-triangle"></i><p>Failed to load order history. Make sure the server is running.</p></div>';
   }
 }
 

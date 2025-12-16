@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <title>Contact - E-Commerce Demo</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -24,11 +24,17 @@
   </nav>
 
   <div class="container" style="padding-top: 2rem;">
-    <h1>Get in Touch</h1>
-    <p>We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
+    <div class="section-header">
+      <div>
+        <div class="pill"><i class="fa-solid fa-envelope-open-text"></i> Contact</div>
+        <h1>Get in Touch</h1>
+        <p class="section-note">We'd love to hear from you. Drop a note and we'll respond quickly.</p>
+      </div>
+      <div class="badge-soft"><i class="fa-solid fa-bolt"></i> Avg response: quick</div>
+    </div>
 
-    <div style="display: flex; gap: 4rem; flex-wrap: wrap; margin-top: 2rem;">
-      <form id="contactForm" style="flex: 2;">
+    <div class="contact-grid" style="margin-top: 1.5rem;">
+      <form id="contactForm">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" required placeholder="John Doe">
 
@@ -39,24 +45,23 @@
         <input type="text" id="subject" name="subject" required placeholder="How can we help?">
 
         <label for="message">Message</label>
-        <textarea id="message" name="message" required placeholder="Your message here..."
-          style="height: 150px;"></textarea>
+        <textarea id="message" name="message" required placeholder="Your message here..." style="height: 150px;"></textarea>
 
         <button type="submit" class="btn-primary"><i class="fa-regular fa-paper-plane"></i> Send Message</button>
       </form>
 
-      <div style="flex: 1; min-width: 300px;">
-        <div class="info-item" style="text-align: left; margin-bottom: 1rem;">
+      <div class="contact-info">
+        <div class="info-item">
           <i class="fa-solid fa-envelope"></i>
           <h3>Email Us</h3>
           <p>support@ecommerce-demo.com</p>
         </div>
-        <div class="info-item" style="text-align: left; margin-bottom: 1rem;">
+        <div class="info-item">
           <i class="fa-solid fa-phone"></i>
           <h3>Call Us</h3>
           <p>(555) 123-4567</p>
         </div>
-        <div class="info-item" style="text-align: left; margin-bottom: 1rem;">
+        <div class="info-item">
           <i class="fa-solid fa-location-dot"></i>
           <h3>Visit Us</h3>
           <p>123 Demo Street, Tech City</p>
@@ -67,11 +72,6 @@
 
   <script src="script.js"></script>
   <script>
-    // API Base URL - automatically detects if running locally or online
-    const API_BASE_URL = window.location.origin === 'file://' || window.location.hostname === 'localhost' 
-      ? 'http://localhost:3000' 
-      : window.location.origin;
-    
     // Load cart on page load
     if (typeof loadCart === 'function') {
       loadCart();
