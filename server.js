@@ -52,11 +52,11 @@ app.get('/products', async (req, res) => {
     }
 });
 
-// 2. Create an order
+// 2. Create an order (server-side price and stock validation)
 app.post('/orders', async (req, res) => {
-    const { items, total_amount } = req.body; // items: [{ product_id, quantity, unit_price }]
+    const { items = [], customer_id = null, shipping_address_id = null } = req.body; // items: [{ product_id, quantity }]
 
-    if (!items || items.length === 0) {
+    if (!Array.isArray(items) || items.length === 0) {
         return res.status(400).json({ error: 'No items in order' });
     }
 
@@ -65,31 +65,45 @@ app.post('/orders', async (req, res) => {
     try {
         await connection.beginTransaction();
 
-        // Validate stock for all items
+        // Pull all products referenced in the order in one query
+        const productIds = items.map(item => item.product_id);
+        const [productRows] = await connection.query(
+            'SELECT product_id, price, stock_quantity FROM products WHERE product_id IN (?)',
+            [productIds]
+        );
+        const productMap = new Map(productRows.map(p => [p.product_id, p]));
+
+        let total = 0;
+
         for (const item of items) {
-            const [results] = await connection.query(
-                'SELECT stock_quantity FROM products WHERE product_id = ?',
-                [item.product_id]
-            );
-            
-            if (!results || results.length === 0) {
+            const product = productMap.get(item.product_id);
+            if (!product) {
                 throw new Error(`Product ${item.product_id} not found`);
             }
-            
-            const currentStock = results[0].stock_quantity;
-            if (currentStock < item.quantity) {
-                throw new Error(`Insufficient stock for product ${item.product_id}. Available: ${currentStock}, Requested: ${item.quantity}`);
+
+            const quantity = Number(item.quantity);
+            if (!Number.isInteger(quantity) || quantity <= 0) {
+                throw new Error(`Invalid quantity for product ${item.product_id}`);
             }
+
+            if (product.stock_quantity < quantity) {
+                throw new Error(`Insufficient stock for product ${item.product_id}. Available: ${product.stock_quantity}, Requested: ${quantity}`);
+            }
+
+            total += quantity * Number(product.price);
         }
 
-        // Insert Order
+        // Insert Order with computed total
         const [orderResult] = await connection.query(
-            'INSERT INTO orders (total_amount) VALUES (?)',
-            [total_amount]
+            'INSERT INTO orders (customer_id, shipping_address_id, status, payment_status, total_amount) VALUES (?, ?, ?, ?, ?)',
+            [customer_id, shipping_address_id, 'PENDING', 'PENDING', total]
         );
         
         const orderId = orderResult.insertId;
-        const orderItems = items.map(item => [orderId, item.product_id, item.quantity, item.unit_price]);
+        const orderItems = items.map(item => {
+            const product = productMap.get(item.product_id);
+            return [orderId, item.product_id, item.quantity, product.price];
+        });
 
         // Insert Order Items
         await connection.query(
@@ -106,7 +120,7 @@ app.post('/orders', async (req, res) => {
         }
 
         await connection.commit();
-        res.json({ message: 'Order placed successfully', orderId });
+        res.json({ message: 'Order placed successfully', orderId, total_amount: total });
         
     } catch (err) {
         await connection.rollback();
@@ -120,20 +134,42 @@ app.post('/orders', async (req, res) => {
 // 2b. Get all orders (History) with order items
 app.get('/orders', async (req, res) => {
     try {
-        const sql = `
-            SELECT o.*, 
-                   GROUP_CONCAT(
-                       CONCAT(oi.quantity, 'x ', p.name, ' ($', oi.unit_price, ')') 
-                       SEPARATOR ', '
-                   ) as items
+        const [orders] = await db.query(`
+            SELECT o.order_id,
+                   o.order_date,
+                   o.total_amount,
+                   o.status,
+                   o.payment_status,
+                   c.first_name,
+                   c.last_name
             FROM orders o
-            LEFT JOIN order_items oi ON o.order_id = oi.order_id
-            LEFT JOIN products p ON oi.product_id = p.product_id
-            GROUP BY o.order_id
+            LEFT JOIN customers c ON o.customer_id = c.customer_id
             ORDER BY o.order_date DESC
-        `;
-        const [results] = await db.query(sql);
-        res.json(results);
+        `);
+
+        const [items] = await db.query(`
+            SELECT oi.order_id,
+                   oi.product_id,
+                   oi.quantity,
+                   oi.unit_price,
+                   p.name
+            FROM order_items oi
+            JOIN products p ON oi.product_id = p.product_id
+        `);
+
+        const itemsByOrder = items.reduce((acc, item) => {
+            if (!acc[item.order_id]) acc[item.order_id] = [];
+            acc[item.order_id].push(item);
+            return acc;
+        }, {});
+
+        const response = orders.map(order => ({
+            ...order,
+            customer: order.first_name ? `${order.first_name} ${order.last_name}` : 'Guest',
+            items: itemsByOrder[order.order_id] || []
+        }));
+
+        res.json(response);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Database error' });

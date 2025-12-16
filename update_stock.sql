@@ -1,12 +1,10 @@
--- Update stock quantities for existing products
--- Run this SQL script to update the stock quantities in your database
 
 USE ecommerce_db;
 
-UPDATE products SET stock_quantity = 700 WHERE name = 'Laptop';
-UPDATE products SET stock_quantity = 600 WHERE name = 'Mouse';
-UPDATE products SET stock_quantity = 500 WHERE name = 'Keyboard';
+UPDATE products SET stock_quantity = 60 WHERE sku = 'LAP-ULT-14';
+UPDATE products SET stock_quantity = 400 WHERE sku = 'ACC-MS-WLS';
+UPDATE products SET stock_quantity = 250 WHERE sku = 'PER-KB-MECH';
 
 -- Verify the updates
-SELECT product_id, name, price, stock_quantity FROM products;
+SELECT product_id, sku, name, price, stock_quantity FROM products;
 

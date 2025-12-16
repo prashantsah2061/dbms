@@ -346,14 +346,23 @@ async function fetchOrderHistory() {
     let html = '<div style="display: grid; gap: 1rem;">';
     orders.forEach(order => {
       const date = order.order_date ? new Date(order.order_date).toLocaleDateString() + ' ' + new Date(order.order_date).toLocaleTimeString() : 'N/A';
+      const items = Array.isArray(order.items) ? order.items.map(i => `${i.quantity} x ${i.name} ($${Number(i.unit_price).toFixed(2)})`).join(', ') : 'No line items found';
       html += `
-                <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                    <div>
-                        <strong style="display: block; font-size: 1.1rem; color: var(--text-primary);">Order #${order.order_id}</strong>
-                        <span style="color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-calendar"></i> ${date}</span>
+                <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; display: grid; gap: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="display: block; font-size: 1.1rem; color: var(--text-primary);">Order #${order.order_id}</strong>
+                            <span style="color: #64748b; font-size: 0.9rem;"><i class="fa-solid fa-calendar"></i> ${date}</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 800; font-size: 1.2rem; color: var(--primary);">
+                                $${Number(order.total_amount || 0).toFixed(2)}
+                            </div>
+                            <div style="color: #0ea5e9; font-size: 0.85rem; font-weight: 700;">${order.status || 'PENDING'} / ${order.payment_status || 'PENDING'}</div>
+                        </div>
                     </div>
-                    <div style="font-weight: 800; font-size: 1.2rem; color: var(--primary);">
-                        $${Number(order.total_amount || 0).toFixed(2)}
+                    <div style="color: #475569; font-size: 0.95rem;">
+                        <i class="fa-solid fa-list"></i> ${items}
                     </div>
                 </div>
             `;

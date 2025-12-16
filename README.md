@@ -98,10 +98,27 @@ NODE_ENV=development
 ## Database Schema
 
 The application uses the following tables:
-- `products` - Product inventory
-- `orders` - Order records
+- `customers` - Shopper profile with contact info
+- `addresses` - Customer shipping addresses
+- `categories` - Product categories
+- `products` - Product inventory and stock
+- `orders` - Order header with status and totals
 - `order_items` - Order line items
+- `payments` - Payment audit trail per order
 - `contacts` - Contact form submissions
+
+### System Design (ERD narrative)
+- A `customer` can have many `addresses`; one is flagged as `is_default`.
+- A `category` groups many `products`; each product tracks `sku`, `price`, and `stock_quantity`.
+- An `order` belongs to a `customer` and optionally a `shipping_address`; it has a `status`, `payment_status`, and a computed `total_amount`.
+- `order_items` link each `order` to the `products` purchased, recording `quantity` and `unit_price` at time of sale.
+- `payments` record method/status for each `order`, enabling auditability.
+- `contacts` store inbound messages from the public contact form.
+
+### Implementation evidence (queries)
+- `sample_queries.sql` shows joins/aggregates (catalog + category, top products by revenue, customer order history, payment trail).
+- `verify_orders.sql` lists recent orders with line items and inventory for quick grading checks.
+- `update_stock.sql` refreshes stock levels for seeded products.
 
 ## Deployment
 
