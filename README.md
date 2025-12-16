@@ -141,9 +141,9 @@ This project is open source and available under the MIT License.
 
 ## Author
 
-Prashant Sah
+Pranish Uprety and Prashant Sah
 
 ## Support
 
-For support, email support@example.com or open an issue on GitHub.
+For support, please open an issue on GitHub.
 
