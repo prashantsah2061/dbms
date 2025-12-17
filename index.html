@@ -135,10 +135,97 @@
         <div class="feature-card">
           <h3><i class="fa-solid fa-file-invoice-dollar"></i> Submit orders</h3>
           <p>Checkout flow validates totals and communicates clearly on success.</p>
+      </div>
+      <div class="feature-card">
+        <h3><i class="fa-solid fa-clipboard-check"></i> Verify history</h3>
+        <p>History cards summarize orders with line items, totals, and statuses.</p>
+      </div>
+    </div>
+  </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div>
+          <div class="pill"><i class="fa-solid fa-user-astronaut"></i> Stage-only gimmick</div>
+          <h2><i class="fa-solid fa-id-card-clip"></i> Account & Profile (mock)</h2>
+          <p class="section-note">Show what an auth flow would look like without wiring anything up.</p>
         </div>
-        <div class="feature-card">
-          <h3><i class="fa-solid fa-clipboard-check"></i> Verify history</h3>
-          <p>History cards summarize orders with line items, totals, and statuses.</p>
+        <div class="badge-soft"><i class="fa-solid fa-wand-magic-sparkles"></i> Non-functional</div>
+      </div>
+      <div class="account-grid">
+        <div class="panel login-card">
+          <div class="pill"><i class="fa-solid fa-lock-open"></i> Instant demo login</div>
+          <h3>Log in to Caldwell-store</h3>
+          <p class="section-note">Use this to narrate “secure entry” and show off the UI polish.</p>
+          <label for="demoEmail">Email</label>
+          <input id="demoEmail" type="email" placeholder="demo@caldwell.store" />
+          <label for="demoPass">Password</label>
+          <input id="demoPass" type="password" placeholder="••••••••" />
+          <div class="remember-row">
+            <span class="ghost-chip"><i class="fa-solid fa-fingerprint"></i> Remember this device</span>
+            <span class="ghost-chip"><i class="fa-solid fa-shield-halved"></i> MFA ready</span>
+          </div>
+          <button type="button" class="btn-primary"><i class="fa-solid fa-bolt"></i> Simulate login</button>
+          <p class="section-note" style="margin-top: 0.75rem;">Talking point: “If this were wired, we’d post to /login and hydrate the profile panel.”</p>
+        </div>
+        <div class="panel profile-card">
+          <div class="profile-header">
+            <div class="profile-avatar">PU</div>
+            <div>
+              <div class="pill"><i class="fa-solid fa-user-shield"></i> Demo profile</div>
+              <h3 style="margin: 0.1rem 0;">Pranish Uprety</h3>
+              <div class="profile-meta">
+                <span><i class="fa-solid fa-hashtag"></i> Member ID: 2048</span>
+                <span><i class="fa-solid fa-globe"></i> Region: US-W</span>
+                <span><i class="fa-solid fa-circle-check"></i> Verified</span>
+              </div>
+            </div>
+          </div>
+          <div class="mini-badges">
+            <span class="mini-badge"><i class="fa-solid fa-circle-check"></i> Email locked</span>
+            <span class="mini-badge"><i class="fa-solid fa-mobile-screen"></i> SMS enabled</span>
+            <span class="mini-badge"><i class="fa-solid fa-credit-card"></i> Wallet ready</span>
+          </div>
+          <div class="profile-stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">Lifetime spend</div>
+              <div class="stat-value">$12,480</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Orders placed</div>
+              <div class="stat-value">37</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Last active</div>
+              <div class="stat-value">2m ago</div>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-row">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Account verified</div>
+                <div class="subdued">Email, phone, and device trust</div>
+              </div>
+              <div class="timestamp">00:21</div>
+            </div>
+            <div class="timeline-row">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Profile hydrated</div>
+                <div class="subdued">Orders + wallet pulled server-side</div>
+              </div>
+              <div class="timestamp">00:26</div>
+            </div>
+            <div class="timeline-row">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Session handed off</div>
+                <div class="subdued">Ready to shop and sync cart</div>
+              </div>
+              <div class="timestamp">00:32</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

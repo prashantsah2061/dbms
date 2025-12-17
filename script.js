@@ -34,9 +34,8 @@ function updateCartBadge() {
 }
 
 // API Base URL - automatically detects if running locally or online
-const API_BASE_URL = window.location.origin === 'file://' || window.location.hostname === 'localhost' 
-  ? 'http://localhost:3000' 
-  : window.location.origin;
+const isLocalEnv = window.location.protocol === 'file:' || ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+const API_BASE_URL = isLocalEnv ? 'http://localhost:3000' : window.location.origin;
 
 async function fetchProducts() {
   try {
